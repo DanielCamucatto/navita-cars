@@ -3,22 +3,26 @@
     <div id="container-cars">
       <h1>Veículos</h1>
       <h2>Marcas</h2>
-      <div class="brands">
+      <div class="brands" >
         <div class="brands-itens title">Marca</div>
-        <div class="brands-itens">
-            Fiat
-          <a @click="findCars(marca.codigo)">
+        <div class="brands-itens" v-for="car in cars" v-bind:key="car.codigo">
+            {{car.nome}}
+          <a @click="findModels(car.codigo)">
             Ver modelos
           </a>
         </div>
       </div>
     </div>
-    <div id="container-models">
+    <div id="container-models" ref="models">
       <h2>Modelos</h2>
-      <div class="models">
-        <div class="models-itens title" > Modelo</div>
-        <div class="models-itens" >sei la</div>
-        <div class="models-itens">Prisma</div>
+      <div class="models" >
+        <div class="models-itens title"> 
+            Modelo
+        </div>
+        <div class="models-itens" v-for="model in models.modelos" v-bind:key="model.nome" >
+            {{model.nome}}
+        </div>
+        <!-- <div class="models-itens">Prisma</div> -->
       </div>
     </div>
   </section>
@@ -31,22 +35,27 @@ export default {
   data() {
     return {
       cars: [],
-      modelos:[]
+      models:[]
     };
   },
-  mounted(){
-      this.findCars();
+  created: function(){
+      axios.get("https://parallelum.com.br/fipe/api/v1/carros/marcas").then((resp) => {
+          this.cars = resp.data; 
+      })
   },
+
   methods: {
-    findCars(){
-        const self = this;
-        axios.get("https://parallelum.com.br/fipe/api/v1/carros/marcas").then((resp)=>{
-            console.log(resp)
-            if(resp === 200){
-                self.cars = resp.data;
+    findModels(idMarca){
+        const self = this; 
+        axios.get(`https://parallelum.com.br/fipe/api/v1/carros/marcas/${idMarca}/modelos`).then((resp) => {
+            console.log(self)
+            if(resp.status ===200){
+                self.models = resp.data
+                
             }
-        });
-    } , 
+        })
+    }, 
+    
     selectedLink: () => {
       //const select = event.currentTarget
       //console.log(select)

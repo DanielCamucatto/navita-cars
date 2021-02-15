@@ -1,6 +1,6 @@
 <template>
   <footer>
-      <div>Copyright © Navita 2021</div>
+      <div>Copyright &copy; Navita 2021</div>
   </footer>
 </template>
 
