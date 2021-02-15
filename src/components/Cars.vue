@@ -5,9 +5,9 @@
       <h2>Marcas</h2>
       <div class="brands" >
         <div class="brands-itens title">Marca</div>
-        <div class="brands-itens" v-for="car in cars" v-bind:key="car.codigo">
+        <div class="brands-itens " v-for="car in cars" v-bind:key="car.codigo">
             {{car.nome}}
-          <a @click="selectedLink, findModels(car.codigo)">
+          <a id="button" @click="findModels(car.codigo)">
             Ver modelos
           </a>
         </div>
@@ -31,7 +31,7 @@
 <script>
 import axios from "axios";
 export default {
-    
+  
   data() {
     return {
       cars: [],
@@ -51,7 +51,8 @@ export default {
             //console.log(brand)
             if(resp.status === 200){
                 brand.models = resp.data
-                brand.scrollElement();   
+                brand.scrollElement();  
+                brand.selectedLink();
             }
         })
     }, 
@@ -60,15 +61,13 @@ export default {
             this.$refs.models.scrollIntoView({behavior: 'smooth'})
         })
     },
-    selectedLink: () => {
-      //const select = event.currentTarget
-      //console.log(select)
-      const selected = document.querySelectorAll("active");
-      //console.log(selected)
-      selected.forEach((select) => {
-        select.classList.remove("active");
-      });
-    },
+    selectedLink (){
+        const select = document.getElementById('button')  
+        console.log(select)
+        select.document.getElementById('button').remove('active')
+        console.log(select)
+        select.classList.add('active')  
+    }
   },
 }
 </script>
