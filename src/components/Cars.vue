@@ -7,7 +7,7 @@
         <div class="brands-itens title">Marca</div>
         <div class="brands-itens" v-for="car in cars" v-bind:key="car.codigo">
             {{car.nome}}
-          <a @click="findModels(car.codigo)">
+          <a @click="selectedLink, findModels(car.codigo)">
             Ver modelos
           </a>
         </div>
@@ -46,16 +46,20 @@ export default {
 
   methods: {
     findModels(idMarca){
-        const self = this; 
+        const brand = this; 
         axios.get(`https://parallelum.com.br/fipe/api/v1/carros/marcas/${idMarca}/modelos`).then((resp) => {
-            console.log(self)
-            if(resp.status ===200){
-                self.models = resp.data
-                
+            //console.log(brand)
+            if(resp.status === 200){
+                brand.models = resp.data
+                brand.scrollElement();   
             }
         })
     }, 
-    
+    scrollElement(){
+        this.$nextTick(() => {
+            this.$refs.models.scrollIntoView({behavior: 'smooth'})
+        })
+    },
     selectedLink: () => {
       //const select = event.currentTarget
       //console.log(select)
@@ -117,6 +121,7 @@ h1 {
   color: #4e73df;
   transition: 2ms;
   text-align: center;
+  cursor: pointer;
 }
 .brands-itens a:hover {
   color: #1cc88a;
